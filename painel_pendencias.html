@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Painel de Pendências</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="painel_pendencias.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-logo">
+            <img src="https://i.ibb.co/5Whnfk0q/CPX.png" alt="CPX Logo" />
+          </div>
+          <div class="brand-texts">
+            <div class="brand-text-main">CPX RJ</div>
+            <div class="brand-text-sub">Painel de pendências</div>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <div class="sidebar-label">Categorias</div>
+          <div class="category-list" id="categoryList"></div>
+        </div>
+
+        <div class="hint-box">
+          <div class="hint-title">Como usar</div>
+          <div>
+            1. Clique em uma categoria.<br />
+            2. Selecione um tópico.<br />
+            3. Preencha os campos à direita.
+          </div>
+        </div>
+      </aside>
+
+      <main class="content">
+        <header class="content-header">
+          <div class="title-block">
+            <div class="title-tagline">Staff • Organização de demandas</div>
+            <div class="title-main">Painel de pendências</div>
+            <div id="breadcrumb" class="breadcrumb">
+              Selecione uma categoria e um tópico na esquerda.
+            </div>
+          </div>
+          <div class="header-right">
+            <div class="status-pill">
+              <span class="status-dot"></span>
+              Painel online
+            </div>
+          </div>
+        </header>
+
+        <section class="panel">
+          <div id="emptyState" class="empty-state">
+            <h2>Nenhum tópico selecionado</h2>
+            <p>
+              Use o menu lateral para escolher uma categoria e um tópico. Assim
+              que selecionar, o formulário completo aparecerá aqui.
+            </p>
+          </div>
+
+          <section id="formSection" class="form-section hidden">
+            <div class="form-card">
+              <div class="form-fields">
+                <div class="field">
+                  <div class="field-label">
+                    <span>Título da pendência</span>
+                    <small id="fieldHint">
+                      Ex.: Ajustar algo nesse tópico.
+                    </small>
+                  </div>
+                  <input
+                    id="inputTitulo"
+                    class="input"
+                    type="text"
+                    placeholder="Resumo curto do que precisa ser feito"
+                  />
+                </div>
+
+                <!-- CRAFT / PAINELFAC -->
+                <div id="craftFields" class="craft-fields hidden">
+                  <div class="field-group-title">
+                    Dados específicos – Craft / PainelFac
+                  </div>
+
+                  <div class="form-row">
+                    <div class="field">
+                      <div class="field-label">
+                        <span>Nome do resp.</span>
+                        <small>Ex.: Kakashi</small>
+                      </div>
+                      <input
+                        id="craftResp"
+                        class="input"
+                        type="text"
+                        placeholder="Responsável pela organização"
+                      />
+                    </div>
+                    <div class="field">
+                      <div class="field-label">
+                        <span>Nome da org</span>
+                        <small>Ex.: Alemanha</small>
+                      </div>
+                      <input
+                        id="craftOrg"
+                        class="input"
+                        type="text"
+                        placeholder="Nome da facção / organização"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="field">
+                      <div class="field-label">
+                        <span>CDS2 da bancada</span>
+                        <small>Ex.: 2389.05, 5042.64, 48.8</small>
+                      </div>
+                      <input
+                        id="craftCds"
+                        class="input"
+                        type="text"
+                        placeholder="x, y, z"
+                      />
+                    </div>
+                    <div class="field">
+                      <div class="field-label">
+                        <span>Segmento da org</span>
+                        <small>Ex.: municao</small>
+                      </div>
+                      <input
+                        id="craftSegmento"
+                        class="input"
+                        type="text"
+                        placeholder="segmento (municao, arma, etc.)"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- DESMANCHE -->
+                <div id="desmFields" class="craft-fields hidden">
+                  <div class="field-group-title">
+                    Dados específicos – Desmanche
+                  </div>
+
+                  <div class="form-row">
+                    <div class="field">
+                      <div class="field-label">
+                        <span>Nome da facção</span>
+                        <small>Ex.: Alemanha</small>
+                      </div>
+                      <input
+                        id="desmOrg"
+                        class="input"
+                        type="text"
+                        placeholder="Nome da facção"
+                      />
+                    </div>
+                    <div class="field">
+                      <div class="field-label">
+                        <span>Percentual (%)</span>
+                        <small>Ex.: 30</small>
+                      </div>
+                      <input
+                        id="desmPercentual"
+                        class="input"
+                        type="number"
+                        min="0"
+                        max="100"
+                        step="1"
+                        placeholder="30"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="field">
+                      <div class="field-label">
+                        <span>CDS do blip</span>
+                        <small>Ex.: 2389.05, 5042.64, 48.8</small>
+                      </div>
+                      <input
+                        id="desmBlipCds"
+                        class="input"
+                        type="text"
+                        placeholder="x, y, z (blip no chão)"
+                      />
+                    </div>
+                    <div class="field">
+                      <div class="field-label">
+                        <span>CDS da prateleira</span>
+                        <small>Ex.: 2389.05, 5042.64, 48.8, 180.0</small>
+                      </div>
+                      <input
+                        id="desmShelvesCds"
+                        class="input"
+                        type="text"
+                        placeholder="x, y, z, heading (shelves)"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- BLIPE PVP -->
+                <div id="blipFields" class="craft-fields hidden">
+                  <div class="field-group-title">
+                    Dados específicos – Blipe PvP
+                  </div>
+
+                  <div class="form-row">
+                    <div class="field">
+                      <div class="field-label">
+                        <span>CDS do blip</span>
+                        <small>Ex.: 2389.05, 5042.64, 48.8</small>
+                      </div>
+                      <input
+                        id="blipCds"
+                        class="input"
+                        type="text"
+                        placeholder="x, y, z"
+                      />
+                    </div>
+                    <div class="field">
+                      <div class="field-label">
+                        <span>Nome da facção</span>
+                        <small>Ex.: Alemanha</small>
+                      </div>
+                      <input
+                        id="blipOrg"
+                        class="input"
+                        type="text"
+                        placeholder="Nome da facção"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- FARM AFK -->
+                <div id="farmFields" class="craft-fields hidden">
+                  <div class="field-group-title">
+                    Dados específicos – Farm AFK
+                  </div>
+
+                  <div class="form-row">
+                    <div class="field">
+                      <div class="field-label">
+                        <span>Nome da facção</span>
+                        <small>Ex.: Alemanha</small>
+                      </div>
+                      <input
+                        id="farmOrg"
+                        class="input"
+                        type="text"
+                        placeholder="Nome da facção"
+                      />
+                    </div>
+                    <div class="field">
+                      <div class="field-label">
+                        <span>Segmento</span>
+                        <small>Ex.: municao</small>
+                      </div>
+                      <input
+                        id="farmSegmento"
+                        class="input"
+                        type="text"
+                        placeholder="segmento (municao, arma, etc.)"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="field">
+                      <div class="field-label">
+                        <span>CDS do farm</span>
+                        <small>Ex.: 2389.05, 5042.64, 48.8</small>
+                      </div>
+                      <input
+                        id="farmCds"
+                        class="input"
+                        type="text"
+                        placeholder="x, y, z (pos do farm)"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- RECRUTAMENTO -->
+                <div id="recrutamentoFields" class="craft-fields hidden">
+                  <div class="field-group-title">
+                    Dados específicos – Recrutamento
+                  </div>
+
+                  <div class="form-row">
+                    <div class="field">
+                      <div class="field-label">
+                        <span>Nome da facção</span>
+                        <small>Ex.: Alemanha</small>
+                      </div>
+                      <input
+                        id="recrutOrg"
+                        class="input"
+                        type="text"
+                        placeholder="Nome da facção"
+                      />
+                    </div>
+                    <div class="field">
+                      <div class="field-label">
+                        <span>Segmento</span>
+                        <small>Ex.: municao</small>
+                      </div>
+                      <input
+                        id="recrutTipo"
+                        class="input"
+                        type="text"
+                        placeholder="segmento (municao, arma, etc.)"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- SPAWN VIP -->
+                <div id="spawnFields" class="craft-fields hidden">
+                  <div class="field-group-title">
+                    Dados específicos – Spawn VIP
+                  </div>
+
+                  <div class="form-row">
+                    <div class="field">
+                      <div class="field-label">
+                        <span>Nome da facção</span>
+                        <small>Ex.: Alemanha</small>
+                      </div>
+                      <input
+                        id="spawnOrg"
+                        class="input"
+                        type="text"
+                        placeholder="Nome da facção"
+                      />
+                    </div>
+                    <div class="field">
+                      <div class="field-label">
+                        <span>CDS2</span>
+                        <small>Ex.: 2389.05, 5042.64, 48.8</small>
+                      </div>
+                      <input
+                        id="spawnCds"
+                        class="input"
+                        type="text"
+                        placeholder="x, y, z"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="field">
+                    <div class="field-label">
+                      <span>URL da imagem</span>
+                      <small>Opcional – usa padrão se vazio</small>
+                    </div>
+                    <input
+                      id="spawnImage"
+                      class="input"
+                      type="text"
+                      placeholder="http://images.fusiongroup.club/bahamas/deathscreen/influencer.png"
+                    />
+                  </div>
+                </div>
+
+                <!-- UTZ ZONE -->
+                <div id="utzFields" class="craft-fields hidden">
+                  <div class="field-group-title">
+                    Dados específicos – UTZ Zone
+                  </div>
+
+                  <div class="form-row">
+                    <div class="field">
+                      <div class="field-label">
+                        <span>Nome do resp.</span>
+                        <small>Ex.: Kakashi</small>
+                      </div>
+                      <input
+                        id="utzResp"
+                        class="input"
+                        type="text"
+                        placeholder="Responsável pela facção"
+                      />
+                    </div>
+                    <div class="field">
+                      <div class="field-label">
+                        <span>Nome da facção</span>
+                        <small>Ex.: Alemanha</small>
+                      </div>
+                      <input
+                        id="utzOrg"
+                        class="input"
+                        type="text"
+                        placeholder="Nome da facção"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="field">
+                    <div class="field-label">
+                      <span>UTZ Zone</span>
+                      <small>Cole ou escreva a utzzone completa</small>
+                    </div>
+                    <textarea
+                      id="utzZona"
+                      class="input"
+                      rows="4"
+                      placeholder="Conteúdo da utzzone para essa facção"
+                    ></textarea>
+                  </div>
+                </div>
+
+                <!-- BLOQUE VEICULOS (POLÍCIA) -->
+                <div id="bloqueFields" class="craft-fields hidden">
+                  <div class="field-group-title">
+                    Dados específicos – Bloque Veiculos
+                  </div>
+
+                  <div class="field">
+                    <div class="field-label">
+                      <span>Nome do veículo</span>
+                      <small>Ex.: police3</small>
+                    </div>
+                    <input
+                      id="bloqueVeiculo"
+                      class="input"
+                      type="text"
+                      placeholder="nome do veículo (spawn name)"
+                    />
+                  </div>
+                </div>
+
+                <!-- TOOGLE (POLÍCIA) -->
+                <div id="toogleFields" class="craft-fields hidden">
+                  <div class="field-group-title">
+                    Dados específicos – Toogle
+                  </div>
+
+                  <div class="form-row">
+                    <div class="field">
+                      <div class="field-label">
+                        <span>CDS2</span>
+                        <small>Ex.: 2389.05, 5042.64, 48.8</small>
+                      </div>
+                      <input
+                        id="toogleCds"
+                        class="input"
+                        type="text"
+                        placeholder="x, y, z"
+                      />
+                    </div>
+                    <div class="field">
+                      <div class="field-label">
+                        <span>Nome da guarnição</span>
+                        <small>Ex.: POLICIAMILITAR</small>
+                      </div>
+                      <input
+                        id="toogleGuarnicao"
+                        class="input"
+                        type="text"
+                        placeholder="Guarnição (ex.: POLICIAMILITAR)"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="field">
+                    <div class="field-label">
+                      <span>Cor do blip</span>
+                      <small
+                        >1=vermelho, 2=verde, 3=azul claro, 4=branco, 5=amarelo
+                        escuro, 25=verde exército</small
+                      >
+                    </div>
+                    <select id="toogleColor" class="input">
+                      <option value="">Selecione a cor (número)</option>
+                      <option value="1">1 - Vermelho</option>
+                      <option value="2">2 - Verde</option>
+                      <option value="3">3 - Azul claro</option>
+                      <option value="4">4 - Branco</option>
+                      <option value="5">5 - Amarelo escuro</option>
+                      <option value="25">25 - Verde exército</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- MDT ARSENAL (POLÍCIA) -->
+                <div id="arsenalFields" class="craft-fields hidden">
+                  <div class="field-group-title">
+                    Dados específicos – MDT Arsenal
+                  </div>
+
+                  <div class="form-row">
+                    <div class="field">
+                      <div class="field-label">
+                        <span>CDS2 do arsenal</span>
+                        <small>Ex.: 2389.05, 5042.64, 48.8</small>
+                      </div>
+                      <input
+                        id="arsenalCds"
+                        class="input"
+                        type="text"
+                        placeholder="x, y, z"
+                      />
+                    </div>
+                    <div class="field">
+                      <div class="field-label">
+                        <span>Nome da guarnição</span>
+                        <small>Ex.: PMERJ</small>
+                      </div>
+                      <input
+                        id="arsenalGuarnicao"
+                        class="input"
+                        type="text"
+                        placeholder="Guarnição (comentário)"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- MDT PENA MÁXIMA -->
+                <div id="penaFields" class="craft-fields hidden">
+                  <div class="field-group-title">
+                    Dados específicos – MDT Pena Máxima
+                  </div>
+
+                  <div class="form-row">
+                    <div class="field">
+                      <div class="field-label">
+                        <span>Tempo máximo de prisão (min)</span>
+                        <small>Ex.: 180</small>
+                      </div>
+                      <input
+                        id="penaTempo"
+                        class="input"
+                        type="number"
+                        min="0"
+                        step="1"
+                        placeholder="tempo em minutos"
+                      />
+                    </div>
+                    <div class="field">
+                      <div class="field-label">
+                        <span>Observação</span>
+                        <small>Opcional</small>
+                      </div>
+                      <input
+                        id="penaObs"
+                        class="input"
+                        type="text"
+                        placeholder="Motivo / observações (opcional)"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- INFRAÇÕES (MDT) -->
+                <div id="infracaoFields" class="craft-fields hidden">
+                  <div class="field-group-title">
+                    Dados específicos – Infrações MDT
+                  </div>
+
+                  <div class="form-row">
+                    <div class="field">
+                      <div class="field-label">
+                        <span>Nome da infração</span>
+                        <small>Ex.: Roubo de veículo</small>
+                      </div>
+                      <input
+                        id="infracaoNome"
+                        class="input"
+                        type="text"
+                        placeholder="nome da infração"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="field">
+                      <div class="field-label">
+                        <span>Tempo de prisão</span>
+                        <small>Minutos (0 se não tiver prisão)</small>
+                      </div>
+                      <input
+                        id="infracaoTempo"
+                        class="input"
+                        type="number"
+                        min="0"
+                        step="1"
+                        placeholder="tempo em minutos"
+                      />
+                    </div>
+                    <div class="field">
+                      <div class="field-label">
+                        <span>Multa</span>
+                        <small>0 se não tiver multa</small>
+                      </div>
+                      <input
+                        id="infracaoMulta"
+                        class="input"
+                        type="number"
+                        min="0"
+                        step="1"
+                        placeholder="valor da multa"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- PRAZO -->
+                <div class="field">
+                  <div class="field-label">
+                    <span>Prazo sugerido</span>
+                    <small>Opcional</small>
+                  </div>
+                  <input
+                    id="inputPrazo"
+                    class="input"
+                    type="text"
+                    placeholder="Ex.: até próximo restart, até 10/11..."
+                  />
+                </div>
+              </div>
+
+              <aside class="side-info">
+                <div class="side-info-block">
+                  <div class="side-info-title">Resumo automático</div>
+                  <div id="previewResumo" class="side-info-list">
+                    Comece a preencher os campos e o resumo aparecerá aqui.
+                  </div>
+                </div>
+
+                <div class="side-info-block">
+                  <div class="side-info-title">Contexto atual</div>
+                  <div class="side-info-list">
+                    <div class="side-info-item">
+                      <span>Categoria</span>
+                      <span class="side-pill" id="previewCategoria">-</span>
+                    </div>
+                    <div class="side-info-item">
+                      <span>Tópico</span>
+                      <span class="side-pill" id="previewSubtipo">-</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="side-info-block">
+                  <div class="side-info-title">Bloco de código</div>
+                  <div class="side-info-list">
+                    <div class="code-block-wrapper">
+                      <pre
+                        id="manualSnippet"
+                        class="code-block"
+                        spellcheck="false"
+                      ></pre>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="actions">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="btnPrever"
+                  >
+                    Prever pendência
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    id="btnLimpar"
+                  >
+                    Limpar
+                  </button>
+                  <button type="button" class="btn btn-primary" id="btnEnviar">
+                    Enviar para webhook
+                  </button>
+                </div>
+
+                <div id="statusMensagem" class="status-text"></div>
+              </aside>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script src="painel_pendencias.js" defer></script>
+  </body>
+</html>
+
